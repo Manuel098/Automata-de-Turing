@@ -13,11 +13,11 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        public bool valid;
         public string[] Palabras;
         public string ruta, result, autoName = "Sumador";
 
-        public Form1()
-        {
+        public Form1() {
             InitializeComponent();
             nameAuto.Text = autoName;
         }
@@ -33,18 +33,6 @@ namespace WindowsFormsApp1
                 //inputMessage.AppendText(ruta);
             }
             open.Dispose();
-        }
-
-        private void restadorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoName = "Restador";
-            nameAuto.Text = autoName;
-        }
-
-        private void parDe0ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            autoName = "doubleCero";
-            nameAuto.Text = "Numero par de ceros";
         }
 
         private void subirArchivoToolStripMenuItem_Click(object sender, EventArgs e){
@@ -88,17 +76,94 @@ namespace WindowsFormsApp1
             leer.Close();
         }
 
-        private void sumadorToolStripMenuItem_Click(object sender, EventArgs e){
+        private void save_Click(object sender, EventArgs e) {
+            StreamWriter escribir = new StreamWriter(ruta, true);
+            try {
+                if (inputData.Text != null || inputData.Text != "") {
+                    escribir.WriteLine(inputData.Text);
+                    escribir.Close();
+                    inputMessage.AppendText(inputData.Text + "\n");
+                    switch (autoName) {
+                        case "doubleCero":
+                            result = doubleCero(inputData.Text);
+                            break;
+                        case "Restador":
+                            result = restador(inputData.Text);
+                            break;
+                        case "Sumador":
+                            result = sumador(inputData.Text);
+                            break;
+                    }
+                    inputMessage.AppendText(result + "\n\n");
+                }
+                inputData.Text = "";
+            }
+            catch {
+                MessageBox.Show("error");
+            }
+        }
+
+        private void sumadorToolStripMenuItem_Click(object sender, EventArgs e) {
             autoName = "Sumador";
             nameAuto.Text = autoName;
         }
 
+        private void restadorToolStripMenuItem_Click(object sender, EventArgs e) {
+            autoName = "Restador";
+            nameAuto.Text = autoName;
+        }
+
+        private void parDe0ToolStripMenuItem_Click(object sender, EventArgs e) {
+            autoName = "doubleCero";
+            nameAuto.Text = "Numero par de ceros";
+        }
+
         private string sumador(string word){
-            string res = "";
+            string finishWord = "", status="q0";
+            char[] l, res;
             int i=0;
 
             if(int.TryParse(word, out i)){
-                return (i+1).ToString();
+                word = 'b'+word+'b';
+                l = word.ToCharArray();
+                res = l;
+                for (int j =0; j<word.Length;) {
+                    switch (status) {
+                        case "q0":
+                            if (j == 0 && l[j] == 'b' || j != 0 && l[j] != 'b') {
+                                res[j] = l[j];
+                                j++;
+                            }
+                            else {
+                                status = "q1";
+                                j--;
+                            }
+                            if(l[j] != 'b'&& l[j] != '1'&& l[j] != '0') {
+                                status = "failure";
+                            }
+                            break;
+                        case "q1":
+                            if (res[j] == '0'|| res[j] == 'b') {
+                                res[j] = '1';
+                                status = "finish";
+                            }else if (res[j] == '1') {
+                                res[j] = '0';
+                                j--;
+                            }
+                            break;
+                        case "finish":
+                            j = 2500;
+                            break;
+                        case "failure":
+                            return "El digito no es binario";
+                    }
+                }
+                for (int j = 0; j < word.Length-1;j++) {
+                    if (res[j] != 'b') {
+                        finishWord = finishWord + res[j];
+                    }
+                }
+                    return finishWord;
             }
             else {
                 return "No se puede realizar la operación";
@@ -106,13 +171,88 @@ namespace WindowsFormsApp1
         }
 
         private string restador(string word) {
-            string res = "";
-            return res;
+            string finishWord = "", status = "q0";
+            char[] l, res;
+            int i = 0;
+
+            if (int.TryParse(word, out i)) {
+                word = 'b' + word + 'b';
+                l = word.ToCharArray();
+                res = l;
+                for (int j = 0; j < word.Length;) {
+                    switch (status) {
+                        case "q0":
+                            if (j == 0 && l[j] == 'b' || j != 0 && l[j] != 'b') {
+                                res[j] = l[j];
+                                j++;
+                            }
+                            else {
+                                status = "q1";
+                                j--;
+                            }
+                            if (l[j] != 'b' && l[j] != '1' && l[j] != '0') {
+                                status = "failure";
+                            }
+                            break;
+                        case "q1":
+                            if (res[j] == '1') {
+                                res[j] = '0';
+                                status = "finish";
+                            }else if (res[j] == '0') {
+                                res[j] = '1';
+                                j--;
+                            }
+                            else {
+                                status = "failure";
+                            }
+                            break;
+                        case "finish":
+                            j = 25;
+                            break;
+                        case "failure":
+                            return "El digito no se puede restar con este proseso";
+                    }
+                }
+                for (int j = 0; j < word.Length - 1; j++) {
+                    if (res[j] != 'b') {
+                        finishWord = finishWord + res[j];
+                    }
+                }
+                return finishWord;
+            }
+            else {
+                return "No se puede realizar la operación";
+            }
         }
 
         private string doubleCero(string word) {
-            string res = "";
-            return res;
+            string finishWord = "", status = "q0";
+            char[] l, res;
+            int i = 0;
+
+            if (int.TryParse(word, out i)) {
+                word = 'b' + word + 'b';
+                l = word.ToCharArray();
+                res = l;
+                for (int j = 0; j < word.Length;) {
+                    switch (status) {
+                        case "q0":
+                            break;
+                        case "q1":
+                            break;
+                        case "finish":
+                            j = 25;
+                            break;
+                        case "failure":
+                            return "El digito no es binario";
+                    }
+                }
+                return finishWord;
+            }
+            else {
+                return "No se puede realizar la operación";
+            }
         }
+
     }
 }

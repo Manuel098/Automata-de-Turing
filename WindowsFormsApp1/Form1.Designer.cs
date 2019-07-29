@@ -38,6 +38,7 @@
             this.parDe0ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nameAuto = new System.Windows.Forms.Label();
             this.inputMessage = new System.Windows.Forms.RichTextBox();
+            this.save = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +46,7 @@
             // 
             this.Star.Location = new System.Drawing.Point(34, 137);
             this.Star.Name = "Star";
-            this.Star.Size = new System.Drawing.Size(75, 37);
+            this.Star.Size = new System.Drawing.Size(161, 49);
             this.Star.TabIndex = 0;
             this.Star.Text = "Iniciar";
             this.Star.UseVisualStyleBackColor = true;
@@ -124,12 +125,23 @@
             this.inputMessage.TabIndex = 6;
             this.inputMessage.Text = "";
             // 
+            // save
+            // 
+            this.save.Location = new System.Drawing.Point(212, 137);
+            this.save.Name = "save";
+            this.save.Size = new System.Drawing.Size(161, 49);
+            this.save.TabIndex = 7;
+            this.save.Text = "Guardar";
+            this.save.UseVisualStyleBackColor = true;
+            this.save.Click += new System.EventHandler(this.save_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.save);
             this.Controls.Add(this.inputMessage);
             this.Controls.Add(this.nameAuto);
             this.Controls.Add(this.menuStrip1);
@@ -157,6 +169,7 @@
         private System.Windows.Forms.ToolStripMenuItem subirArchivoToolStripMenuItem;
         private System.Windows.Forms.Label nameAuto;
         private System.Windows.Forms.RichTextBox inputMessage;
+        private System.Windows.Forms.Button save;
     }
 }
 
