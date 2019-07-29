@@ -118,16 +118,24 @@ namespace WindowsFormsApp1
             nameAuto.Text = "Numero par de ceros";
         }
 
-        private string sumador(string word){
-            string finishWord = "", status="q0";
-            char[] l, res;
-            int i=0;
+        private void label1_Click(object sender, EventArgs e) {
+            Application.Exit();
+        }
 
-            if(int.TryParse(word, out i)){
-                word = 'b'+word+'b';
+        private void minimizar_Click(object sender, EventArgs e) {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private string sumador(string word) {
+            string finishWord = "", status = "q0";
+            char[] l, res;
+            int i = 0;
+
+            if (int.TryParse(word, out i)) {
+                word = 'b' + word + 'b';
                 l = word.ToCharArray();
                 res = l;
-                for (int j =0; j<word.Length;) {
+                for (int j = 0; j < word.Length;) {
                     switch (status) {
                         case "q0":
                             if (j == 0 && l[j] == 'b' || j != 0 && l[j] != 'b') {
@@ -138,32 +146,33 @@ namespace WindowsFormsApp1
                                 status = "q1";
                                 j--;
                             }
-                            if(l[j] != 'b'&& l[j] != '1'&& l[j] != '0') {
+                            if (l[j] != 'b' && l[j] != '1' && l[j] != '0') {
                                 status = "failure";
                             }
                             break;
                         case "q1":
-                            if (res[j] == '0'|| res[j] == 'b') {
+                            if (res[j] == '0' || res[j] == 'b') {
                                 res[j] = '1';
                                 status = "finish";
-                            }else if (res[j] == '1') {
+                            }
+                            else if (res[j] == '1') {
                                 res[j] = '0';
                                 j--;
                             }
                             break;
                         case "finish":
-                            j = 2500;
+                            j = word.Length+2;
                             break;
                         case "failure":
                             return "El digito no es binario";
                     }
                 }
-                for (int j = 0; j < word.Length-1;j++) {
+                for (int j = 0; j < word.Length - 1; j++) {
                     if (res[j] != 'b') {
                         finishWord = finishWord + res[j];
                     }
                 }
-                    return finishWord;
+                return finishWord;
             }
             else {
                 return "No se puede realizar la operación";
@@ -207,7 +216,7 @@ namespace WindowsFormsApp1
                             }
                             break;
                         case "finish":
-                            j = 25;
+                            j = word.Length+2;
                             break;
                         case "failure":
                             return "El digito no se puede restar con este proseso";
@@ -226,25 +235,51 @@ namespace WindowsFormsApp1
         }
 
         private string doubleCero(string word) {
-            string finishWord = "", status = "q0";
-            char[] l, res;
+            string finishWord ="", status = "q0";
+            char[] l;
             int i = 0;
 
             if (int.TryParse(word, out i)) {
-                word = 'b' + word + 'b';
+                word = word + 'b';
                 l = word.ToCharArray();
-                res = l;
                 for (int j = 0; j < word.Length;) {
                     switch (status) {
                         case "q0":
+                            if (l[j] == '0') {
+                                status = "q1";
+                                j++;
+                            }
+                            else if (l[j] == '1') {
+                                j++;
+                            }else if (l[j] == 'b') {
+                                status = "finish";
+                            }
+                            if (l[j] != 'b' && l[j] != '1' && l[j] != '0') {
+                                status = "failure";
+                            }
                             break;
                         case "q1":
+                            if (l[j] == '0') {
+                                status = "q0";
+                                j++;
+                            }else if(l[j] == '1') {
+                                j++;
+                            }else if (j != 0 && l[j] == 'b') {
+                                status = "error";
+                            }
                             break;
                         case "finish":
-                            j = 25;
+                            j++;
+                            finishWord = "Si cuenta con par de 0";
+                            break;
+                        case "error":
+                            j++;
+                            finishWord = "No cuenta con par de 0";
                             break;
                         case "failure":
-                            return "El digito no es binario";
+                            j++;
+                            finishWord = "El digito no es binario";
+                            break;
                     }
                 }
                 return finishWord;
